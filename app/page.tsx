@@ -9,29 +9,31 @@ import PinList from "./components/pins/PinList";
 
 export default function Home() {
   const db = getFirestore(app);
-  const [listOfPins, setListOfPins] = useState([]);
+  const [listOfPins, setListOfPins] = useState<{ data: any; id: string }[]>([]);
 
   useEffect(() => {
     getAllPins();
   }, []);
+
   const getAllPins = async () => {
     setListOfPins([]);
     const q = query(collection(db, "posts"));
     const querySnapshot = await getDocs(q);
-    const pins = []
+
+    const pins: { data: any, id: string }[] = [];
     querySnapshot.forEach((doc) => {
-      
-      pins.push({data:doc.data(),id:doc.id})
-      
+      pins.push({ data: doc.data(), id: doc.id });
     });
-    setListOfPins(pins)
+
+    setListOfPins(pins);
   };
 
   return (
     <>
       <div className="p-3">
-        <PinList pinList={listOfPins}/>
+        <PinList pinList={listOfPins} />
       </div>
     </>
   );
 }
+
