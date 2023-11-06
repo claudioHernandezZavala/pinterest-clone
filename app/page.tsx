@@ -9,7 +9,7 @@ import PinList from "./components/pins/PinList";
 
 export default function Home() {
   const db = getFirestore(app);
-  const [listOfPins, setListOfPins] = useState<{ data: any; id: string }[]>([]);
+  const [listOfPins, setListOfPins] = useState<any[]>([]);
 
   useEffect(() => {
     getAllPins();
@@ -20,9 +20,9 @@ export default function Home() {
     const q = query(collection(db, "posts"));
     const querySnapshot = await getDocs(q);
 
-    const pins: { data: any, id: string }[] = [];
+    const pins:any[]= [];
     querySnapshot.forEach((doc) => {
-      pins.push({ data: doc.data(), id: doc.id });
+      pins.push( doc.data());
     });
 
     setListOfPins(pins);

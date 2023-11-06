@@ -50,7 +50,8 @@ const Form = () => {
              imageUrl:url,
              email:session.user.email,
              name:session.user.name,
-             userImage:session.user.image
+             userImage:session.user.image,
+             id:postId
            });
            console.log("Document written with ID: ");
          } catch (e) {
