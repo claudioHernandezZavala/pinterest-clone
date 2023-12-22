@@ -3,7 +3,7 @@ import React from "react";
 import { default as UserTag } from "../userTag";
 import { useRouter } from "next/navigation";
 
-const PinItem = ({ pinValue }) => {
+const PinItem = ({ pinValue ,home}) => {
   const router = useRouter();
   console.log(pinValue)
   const user = {

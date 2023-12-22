@@ -22,16 +22,20 @@ const UserInfo = ({ userInfo }) => {
       <h2 className="text-[30px] font-semibold">{userInfo.name}</h2>
       <h2 className=" text-gray-400">{userInfo.email}</h2>
       <div className="flex">
-        <button className="rounded-full  bg-gray-200 p-3 mr-5 mt-5 font-semibold">
+        <button className="rounded-full  bg-gray-200 p-3 mr-5 mt-5 font-semibold text-black">
           Share
         </button>
-        <button className="rounded-full  bg-gray-200 p-3 mr-5 mt-5 font-semibold">
-          {" "}
-          Edit Profile
-        </button>
+
+        {session?.user.email === userInfo.email ? (
+           <button className="rounded-full  bg-gray-200 p-3 mr-5 mt-5 font-semibold text-black">
+           {" "}
+           Edit Profile
+         </button>
+        ) : null}
+       
         {session?.user.email === userInfo.email ? (
           <button
-            className="rounded-full  bg-gray-200 p-3 mr-5 mt-5 font-semibold"
+            className="rounded-full  bg-gray-200 p-3 mr-5 mt-5 font-semibold text-black"
             onClick={onLogout}
           >
             {" "}

@@ -50,9 +50,11 @@ const Header = () => {
       <button className="bg-black text-white p-2 px-4 rounded-full">
         Home
       </button>
-      <button onClick={()=>router.push("../pin-builder")} className="font-semibold   text-black p-2 px-4 rounded-full">
-        Create
-      </button>
+      {session?.user ? (
+          <button onClick={()=>router.push("../pin-builder")} className="font-semibold   text-white p-2 px-4 rounded-full">
+          Create
+        </button>
+        ) : null}
       {/* 
       Search input div
       
@@ -81,7 +83,7 @@ const Header = () => {
         />
       ) : (
         <button
-          className="font-semibold  text-black p-2 px-4 rounded-full"
+          className="font-semibold  text-white p-2 px-4 rounded-full"
           onClick={() => signIn()}
         >
           Login

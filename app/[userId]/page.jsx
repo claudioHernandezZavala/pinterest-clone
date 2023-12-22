@@ -47,7 +47,7 @@ const Profile = ({ params }) => {
     setPinsList([]);
     const q = query(
       collection(db, "posts"),
-      where("email", "==", userInfo.email)
+      where("email", "==", userInfo?.email)
     );
     const querySnapshot = await getDocs(q);
     const pins = []
@@ -62,7 +62,7 @@ const Profile = ({ params }) => {
 
   useEffect(() => {
     if (userInfo) {
-      console.log("asdasd");
+      //console.log("asdasd");
       getUserPins();
     }
   }, []);
