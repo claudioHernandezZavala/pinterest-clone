@@ -15,13 +15,12 @@ import { default as UserInfo } from "../components/UserInfo";
 import { default as PinList } from "../components/pins/PinList";
 const Profile = ({ params }) => {
   const db = getFirestore(app);
-  const [userInfo, setUserInfo] = useState(null); // Provide an initial value of null
+  const [userInfo, setUserInfo] = useState(null);
   const [pinsList, setPinsList] = useState([]);
+
   useEffect(() => {
-    // console.log(params);
     if (params) {
       getUserInfo(params.userId.replace("%40", "@"));
-      getUserPins(params.userId.replace("%40", "@"));
     }
   }, [params]);
 
@@ -30,13 +29,12 @@ const Profile = ({ params }) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      //console.log("Document data:", docSnap.data());
       setUserInfo(docSnap.data());
     } else {
-      // docSnap.data() will be undefined in this case
-      // console.log("No such document!");
+      setUserInfo(null); // Set userInfo to null if the document doesn't exist
     }
   };
+
   useEffect(() => {
     if (userInfo) {
       getUserPins();
@@ -47,29 +45,19 @@ const Profile = ({ params }) => {
     setPinsList([]);
     const q = query(
       collection(db, "posts"),
-      where("email", "==", userInfo?.email)
+      where("email", "==", userInfo?.email) // Use optional chaining to handle null or undefined userInfo
     );
     const querySnapshot = await getDocs(q);
-    const pins = []
+    const pins = [];
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-
       pins.push(doc.data());
-
     });
     setPinsList(pins);
   };
 
-  useEffect(() => {
-    if (userInfo) {
-      //console.log("asdasd");
-      getUserPins();
-    }
-  }, []);
-
   return (
     <div>
-      {userInfo ? <UserInfo userInfo={userInfo} /> : null}
+      {userInfo ? <UserInfo userInfo={userInfo} /> : <p>User not found</p>}
       <PinList pinList={pinsList} />
     </div>
   );
