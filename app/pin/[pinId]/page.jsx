@@ -1,5 +1,5 @@
-"use client"
-import React, { useEffect, useState } from 'react'
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
@@ -7,30 +7,30 @@ import UserTag from "../../components/userTag";
 import { app } from "../../Shared/firebaseConfig";
 import { HiArrowSmallLeft } from "react-icons/hi2";
 
-function PinDetail({params}) {
-  const router=useRouter();
-  const db=getFirestore(app);
-  const [pinDetail,setPinDetail]=useState([]);
-  useEffect(()=>{
+function PinDetail({ params }) {
+  const router = useRouter();
+  const db = getFirestore(app);
+  const [pinDetail, setPinDetail] = useState([]);
+
+  useEffect(() => {
     getPinDetail();
-  },[])
- const getPinDetail=async()=>{
-      const docRef = doc(db, 'posts',params.pinId );
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-       
-        setPinDetail(docSnap.data())
-      } else {
-       
-        console.log("No such document!");
-      }
-  }
+  }, []);
+  const getPinDetail = async () => {
+    const docRef = doc(db, "posts", params.pinId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log(docSnap.data());
+      setPinDetail(docSnap.data());
+    } else {
+      console.log("No such document!");
+    }
+  };
   return (
     <>
       {pinDetail ? (
         <div className="bg-white p-3 md:p-12 rounded-2xl md:px-24 lg:px-36">
           <HiArrowSmallLeft
-            className="text-[60px] font-bold ml-[-50px] cursor-pointer hover:bg-gray-200 rounded-full p-2"
+            className="text-black text-[60px] font-bold ml-[-50px] cursor-pointer hover:bg-gray-200 rounded-full p-2"
             onClick={() => router.back()}
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 md:gap-10 shadow-lg rounded-2xl p-3 md:p-7 lg:p-12 xl:pd-16">
@@ -45,13 +45,19 @@ function PinDetail({params}) {
             </div>
             <div className="">
               <div>
-                <h2 className="text-[30px] font-bold mb-10">
+                <h2 className="text-[30px] font-bold mb-10 text-black" >
                   {pinDetail.title}
                 </h2>
-                <UserTag user={pinDetail.name} />
-                <h2 className="mt-10">{pinDetail.desc}</h2>
+                <UserTag
+                  user={{
+                    name: pinDetail.name,
+                    image: pinDetail.userImage,
+                    email: pinDetail.email,
+                  }}
+                />
+                <h2 className="mt-10 text-black">{pinDetail.desc}</h2>
                 <button
-                  className="p-2 bg-[#e9e9e9] px-5 text-[23px] mt-10 rounded-full hover:scale-105 transition-all"
+                  className="p-2 bg-[#e9e9e9] px-5 text-[23px] mt-10 rounded-full hover:scale-105 transition-all text-black"
                   onClick={() => window.open(pinDetail.link)}
                 >
                   Open Url
@@ -60,7 +66,9 @@ function PinDetail({params}) {
             </div>
           </div>
         </div>
-      ) : <h2>Loading...</h2>}
+      ) : (
+        <h2>Loading...</h2>
+      )}
     </>
   );
 }
